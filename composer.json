@@ -1,0 +1,24 @@
+{
+    "name": "devmustafa/yii2-blog-mongodb",
+    "description": "Yii2 Blog working with mongodb",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","blog","mongodb"],
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Mustafa Magdi",
+            "email": "developer.mustafa@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "devmustafa\\blog\\": ""
+        }
+    },
+    "extra": {
+        "bootstrap": "devmustafa\\blog\\Bootstrap"
+    }
+}
