@@ -85,7 +85,9 @@ class Category extends \yii\mongodb\ActiveRecord
      */
     public function getWebsiteLang()
     {
-        return Yii::$app->language;
+        // get module variables
+        $module = Yii::$app->getModule('blog');
+        return $module->default_language;
     }
 
     /**

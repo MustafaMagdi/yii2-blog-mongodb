@@ -16,10 +16,8 @@ class Bootstrap implements BootstrapInterface
             $moduleId = $blogModule->id;
             $app->getUrlManager()->addRules([
 				// frontend
-                'posts' => $moduleId . '/frontend/default/index',
-                'blog/post/<slug>' => $moduleId . '/default/index',
-                // backend
-                'blog/posts' => $moduleId . '/default/index',
+                'posts' => $moduleId . '/post',
+                'post/<slug>' => $moduleId . '/post/single',
             ], false);
         }
     }

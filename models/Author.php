@@ -96,7 +96,9 @@ class Author extends \yii\mongodb\ActiveRecord
      */
     public function getWebsiteLang()
     {
-        return Yii::$app->language;
+        // get module variables
+        $module = Yii::$app->getModule('blog');
+        return $module->default_language;
     }
 
     /**
@@ -121,9 +123,11 @@ class Author extends \yii\mongodb\ActiveRecord
     public function upload()
     {
         if ($this->validate() && $this->img !== null) {
+            // get an awesome file name
             $img_name = str_replace(' ', '-',
                     $this->img->baseName) . '-' . time() . '-' . uniqid() . '.' . $this->img->extension;
-            $this->img->saveAs(FRONTEND_UPLOAD_PATH . '/authors/' . $img_name);
+
+            $this->img->saveAs($this->getUploadDirectory() . '/' . $img_name);
             return $img_name;
         } else {
             return false;
@@ -133,8 +137,23 @@ class Author extends \yii\mongodb\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public function getUploadDirectory()
+    {
+        $directory = \Yii::getAlias('@frontend') . '/web/uploads/authors';
+        if(!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
+        return $directory;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getImgUrl()
     {
-        return FRONTEND_BASE_URL . '/uploads/authors/' . $this->img;
+        // get module variables
+        $module = Yii::$app->getModule('blog');
+        $front_url = $module->front_url;
+        return $front_url . '/uploads/authors/' . $this->img;
     }
 }

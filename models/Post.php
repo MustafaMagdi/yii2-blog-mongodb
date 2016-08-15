@@ -151,7 +151,9 @@ class Post extends \yii\mongodb\ActiveRecord
      */
     public function getWebsiteLang()
     {
-        return Yii::$app->language;
+        // get module variables
+        $module = Yii::$app->getModule('blog');
+        return $module->default_language;
     }
 
     /**
@@ -289,9 +291,11 @@ class Post extends \yii\mongodb\ActiveRecord
     public function upload()
     {
         if ($this->validate() && $this->image_origin !== null) {
+            // get an awesome file name
             $img_name = str_replace(' ', '-',
                     $this->image_origin->baseName) . '-' . time() . '-' . uniqid() . '.' . $this->image_origin->extension;
-            $this->image_origin->saveAs(FRONTEND_UPLOAD_PATH . '/posts/' . $img_name);
+
+            $this->image_origin->saveAs($this->getUploadDirectory() . '/' . $img_name);
             return $img_name;
         } else {
             return false;
@@ -301,20 +305,35 @@ class Post extends \yii\mongodb\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function getImgOriginUrl()
+    public function getUploadDirectory()
     {
-        return FRONTEND_BASE_URL . '/uploads/posts/' . $this->image_origin;
+        $directory = \Yii::getAlias('@frontend') . '/web/uploads/posts';
+        if(!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
+        return $directory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPostsList($page_number, $page_size, $q = '')
+    public function getImgOriginUrl()
+    {
+        // get module variables
+        $module = Yii::$app->getModule('blog');
+        $front_url = $module->front_url;
+        return $front_url . '/uploads/posts/' . $this->image_origin;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPostsList($offset, $limit, $q = '')
     {
         $query = $this->find();
         $query->andFilterWhere(['like', 'is_published', 1])
-            ->offset($page_number)
-            ->limit($page_size);
+            ->offset($offset)
+            ->limit($limit);
 
         // if search happened
         if (!empty($q)) {

@@ -25,6 +25,11 @@ class Module extends \yii\base\Module
     /**
      * @inheritdoc
      */
+	public $front_url;
+
+    /**
+     * @inheritdoc
+     */
     public $controllerNamespace = 'devmustafa\blog\modules\frontend\controllers';
 
     /**

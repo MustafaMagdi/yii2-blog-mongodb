@@ -5,7 +5,6 @@ namespace devmustafa\blog\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Category;
 
 /**
  * CategorySearch represents the model behind the search form about `\common\models\Category`.
@@ -61,12 +60,13 @@ class CategorySearch extends Category
             ->andFilterWhere(['like', 'id', $this->id])
             ->andFilterWhere(['like', 'is_active', $this->is_active]);
 
-        // set used language
-        $used_language = Yii::$app->language;
+        // set default language
+        $module = Yii::$app->getModule('blog');
+        $default_language = $module->default_language;
 
         // search in deep docs
         foreach ($this->langAttributes() as $attribute => $type){
-            $query->andFilterWhere(['like', "{$attribute}.{$used_language}", $this->{$attribute}]);
+            $query->andFilterWhere(['like', "{$attribute}.{$default_language}", $this->{$attribute}]);
         }
 
         return $dataProvider;

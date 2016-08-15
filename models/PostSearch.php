@@ -5,7 +5,6 @@ namespace devmustafa\blog\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use devmustafa\blog\Post;
 
 /**
  * PostSearch represents the model behind the search form about `common\models\Post`.
@@ -68,12 +67,13 @@ class PostSearch extends Post
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'updated_at', $this->updated_at]);
 
-        // set used language
-        $used_language = Yii::$app->language;
+        // set default language
+        $module = Yii::$app->getModule('blog');
+        $default_language = $module->default_language;
 
         // search in deep docs
         foreach ($this->langAttributes() as $attribute => $type){
-            $query->andFilterWhere(['like', "{$attribute}.{$used_language}", $this->$attribute]);
+            $query->andFilterWhere(['like', "{$attribute}.{$default_language}", $this->$attribute]);
         }
 
         return $dataProvider;
