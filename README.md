@@ -21,6 +21,9 @@ And you run Mongodb through the following command:
 
     composer require devmustafa/yii2-blog-mongodb
 
+Or add the following line in your composer.json:
+
+    "devmustafa/yii2-blog-mongodb": "*"
 
 
 Configuration
