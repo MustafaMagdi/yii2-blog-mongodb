@@ -10,11 +10,6 @@ class Module extends \yii\base\Module
     /**
      * @inheritdoc
      */
-	public $layout = 'main';
-
-    /**
-     * @inheritdoc
-     */
 	public $listing_size;
 
     /**
