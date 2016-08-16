@@ -29,21 +29,22 @@ Configuration
 1. In your common config file add the following db component:
 
 
-    ...
-    'components' => [
         ...
-        'mongodb' => [
-            'class' => '\yii\mongodb\Connection',
-            'dsn' => 'mongodb://127.0.0.1/DB_MONGO_NAME', // local
-            // 'dsn' => 'mongodb://DB_MONGO_USERNAME:DB_MONGO_PASSWORD@DB_MONGO_HOST/DB_MONGO_NAME, // remote
+        'components' => [
+            ...
+            'mongodb' => [
+                'class' => '\yii\mongodb\Connection',
+                'dsn' => 'mongodb://127.0.0.1/DB_MONGO_NAME', // local
+                // 'dsn' => 'mongodb://DB_MONGO_USERNAME:DB_MONGO_PASSWORD@DB_MONGO_HOST/DB_MONGO_NAME, // remote
+            ],
+            ...
         ],
         ...
-    ],
-    ...
 
 
 2. In your frontend config file add the following module:
-    
+
+
         ...
         'modules' => [
             ...
@@ -60,7 +61,8 @@ Configuration
 
 
 3. In your backend config file add the following module:
-    
+
+
         ...
         'modules' => [
             ...
