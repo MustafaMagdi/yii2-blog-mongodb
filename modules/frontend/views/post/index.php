@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <h3 class="pull-left">
-                                            <?= Html::a($post->getTitle(), Url::to(['/post/single', 'slug' => $post->getSlug()])) ?>
+                                            <?= Html::a($post->getTitle(), Url::to(['/post/' . $post->getSlug()])) ?>
                                         </h3>
                                     </div>
                                     <div class="col-sm-3">
@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <div class="col-md-3">
-            <?= $this->render('search_form') ?>
+            <?= $this->render('_search_form') ?>
         </div>
         <div class="col-md-12">
             <?php

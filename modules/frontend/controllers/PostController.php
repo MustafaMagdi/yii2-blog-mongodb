@@ -69,7 +69,8 @@ class PostController extends Controller
         $query = (new Post)->getSinglePost($slug);
 
         $post = $query->one();
-        if($post != null) {
+
+        if($post === null) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 

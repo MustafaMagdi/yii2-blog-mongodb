@@ -9,7 +9,7 @@ use yii\helpers\Url;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $post->getTitle();
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Posts'), 'url' => ['/post']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Posts'), 'url' => ['/posts']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <div class="col-md-3">
-            <?= $this->render('search_form') ?>
+            <?= $this->render('_search_form') ?>
         </div>
     </div>
 </div>

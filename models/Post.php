@@ -338,11 +338,11 @@ class Post extends \yii\mongodb\ActiveRecord
         // if search happened
         if (!empty($q)) {
             // used language
-            $used_language = Yii::$app->language;
+            $default_language = $this->getWebsiteLang();
 
             //
-            $query->andFilterWhere(['like', "title.{$used_language}", $q])
-                ->orFilterWhere(['like', "body.{$used_language}", $q]);
+            $query->andFilterWhere(['like', "title.{$default_language}", $q])
+                ->orFilterWhere(['like', "body.{$default_language}", $q]);
         }
 
         // return query object
@@ -354,11 +354,11 @@ class Post extends \yii\mongodb\ActiveRecord
      */
     public function getSinglePost($slug)
     {
-        // used language
-        $used_language = Yii::$app->language;
+        // default language
+        $default_language = $this->getWebsiteLang();
 
         $query = $this->find()
-            ->andFilterWhere(['like', "slug.{$used_language}", $slug]);
+            ->andFilterWhere(['like', "slug.{$default_language}", $slug]);
 
         // return query object
         return $query;
