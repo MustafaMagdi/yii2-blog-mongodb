@@ -3,11 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Category */
+/* @var $model devmustafa\blog\models\Category */
+
+// set used language
+$default_language = $module_vars['default_language'];
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Category',
-]) . $model->getTitle();
+]) . $model->title[$default_language];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Categories'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
@@ -17,6 +20,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <?= $this->render('_form', [
         'model' => $model,
+        'module_vars' => $module_vars,
     ]) ?>
 
 </div>

@@ -3,15 +3,15 @@
 use yii\bootstrap\Tabs;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Post */
+/* @var $model devmustafa\blog\models\Post */
 /* @var $form yii\widgets\ActiveForm */
 
-$languages = Yii::$app->params['languages'];
+$used_languages = $module_vars['used_languages'];
 $lang_attributes = $model->langAttributes();
 
 $items = [];
 $i = 1;
-foreach ($languages as $language) {
+foreach ($used_languages as $language) {
     if ($i == 1) {
         $active = true;
     }

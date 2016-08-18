@@ -14,14 +14,18 @@ Installation
 
 And you run Mongodb through the following command:
 
+
     mongod --fork --logpath /var/log/mongodb/mongodb.log
+
 
 * And you setup the extension through the composer:
 
 
     composer require devmustafa/yii2-blog-mongodb
 
+
 Or add the following line in your composer.json:
+
 
     "devmustafa/yii2-blog-mongodb": "*"
 
@@ -53,8 +57,7 @@ Configuration
             ...
             'blog' => [
                 'class' => devmustafa\blog\modules\frontend\Module::className(),
-                'front_url' => 'http://yourdomain.local', // blog url
-                'used_language' => ['en', 'fr'], // list of languages used
+                'used_languages' => ['en', 'fr'], // list of languages used
                 'default_language' => 'en', // default language
                 'listing_size' => 10, // default size of listing page
             ]
@@ -72,7 +75,7 @@ Configuration
             'blog' => [
                 'class' => devmustafa\blog\modules\backend\Module::className(),
                 'front_url' => 'http://yourdomain.local', // blog url
-                'used_language' => ['en', 'fr'], // list of languages used
+                'used_languages' => ['en', 'fr'], // list of languages used
                 'default_language' => 'en', // default language
                 'listing_size' => 10, // default size of listing page
             ]
@@ -82,11 +85,14 @@ Configuration
 
 
 ##### Note:
-`default_language` must be one of your `used_language` array, and if you would like to use a dynamic language in your app, so leave it empty:
+
+`default_language` must be one of your `used_languages` array, and if you would like to use a dynamic language in your app, so leave it empty:
+
 
     'default_language' => '', // empty (don't remove)
 
-In this case the extension reading the value of `Yii::$app->langauge` and it should be one of your defined `used_language` array.
+
+In this case the extension reading the value of `Yii::$app->langauge` and it should be one of your defined `used_languages` array.
 
 
 Usage

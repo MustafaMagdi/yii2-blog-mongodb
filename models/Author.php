@@ -57,18 +57,24 @@ class Author extends \yii\mongodb\ActiveRecord
                 [
                     'url',
                 ],
-                'string'
+                'url'
             ],
             [
                 [
                     '_id',
                     'id',
-                    'name',
-                    'bio',
                 ],
                 'safe'
             ],
-            [['img'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['img'], 'image', 'skipOnEmpty' => true],
+            // rules for deep array values
+            [
+                [
+                    'name',
+                    'bio',
+                ],
+                'each', 'rule' => ['trim']
+            ],
         ];
     }
 

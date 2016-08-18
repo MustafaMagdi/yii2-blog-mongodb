@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use common\models\Post;
+use devmustafa\blog\models\Post;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\PostSearch */
+/* @var $searchModel devmustafa\blog\models\PostSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Posts');

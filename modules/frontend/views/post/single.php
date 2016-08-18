@@ -5,7 +5,7 @@ use yii\widgets\LinkPager;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\CategorySearch */
+/* @var $searchModel devmustafa\blog\models\CategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $post->getTitle();
@@ -23,8 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="row">
                                 <div class="col-sm-9">
                                     <h3 class="pull-left">
-                                        <?= Html::a($post->getTitle(),
-                                            Url::to(['/post/single', 'slug' => $post->getSlug()])) ?>
+                                        <?= $post->getTitle() ?>
                                     </h3>
                                 </div>
                                 <div class="col-sm-3">

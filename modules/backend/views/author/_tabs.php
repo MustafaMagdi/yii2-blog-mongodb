@@ -3,7 +3,7 @@
 use yii\bootstrap\Tabs;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Post */
+/* @var $model devmustafa\blog\models\Post */
 /* @var $form yii\widgets\ActiveForm */
 
 //

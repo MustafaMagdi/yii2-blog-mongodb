@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Author */
+/* @var $model devmustafa\blog\models\Author */
 
 // set used language
 $default_language = $module_vars['default_language'];

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Category */
+/* @var $model devmustafa\blog\models\Category */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -12,7 +12,9 @@ use yii\bootstrap\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $this->render('_tabs', ['model' => $model, 'form' => $form]) ?>
+    <?= $this->render('_tabs', [
+        'model' => $model, 'form' => $form, 'module_vars' => $module_vars
+    ]) ?>
 
     <?= $form->field($model, 'is_active')->inline()->radioList([
         '1' => 'Yes',

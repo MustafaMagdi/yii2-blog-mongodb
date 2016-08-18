@@ -17,17 +17,12 @@ class Module extends \yii\base\Module
     /**
      * @inheritdoc
      */
-	public $used_language;
+	public $used_languages;
 
     /**
      * @inheritdoc
      */
 	public $default_language;
-
-    /**
-     * @inheritdoc
-     */
-	public $front_url;
 
     /**
      * @inheritdoc

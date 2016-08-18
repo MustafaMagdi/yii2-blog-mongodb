@@ -97,17 +97,36 @@ class Post extends \yii\mongodb\ActiveRecord
             ],
             [
                 [
-//                'image_origin',
-//                'image_thumb'
+                'image_origin',
+                'image_thumb'
                 ],
-                'file'
+                'image', 'skipOnEmpty' => true
+            ],
+            // check unique slug
+            [
+                [
+                    'slug',
+                ],
+                'each', 'rule' => ['unique']
+            ],
+            // check valid slug
+            [
+                [
+                    'slug',
+                ],
+                'each', 'rule' => ['match', 'pattern' => '/^[a-z0-9]+(?:-[a-z0-9]+)*$/']
+            ],
+            [
+                [
+                    'title',
+                    'slug',
+                ],
+                'each', 'rule' => ['trim']
             ],
             [
                 [
                     '_id',
                     'id',
-                    'title',
-                    'slug',
                     'intro',
                     'body',
                     'tags',

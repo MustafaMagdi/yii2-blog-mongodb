@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Post */
+/* @var $model devmustafa\blog\models\Post */
 
 $this->title = Yii::t('app', 'Create Post');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Posts'), 'url' => ['index']];

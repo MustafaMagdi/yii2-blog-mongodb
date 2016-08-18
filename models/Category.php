@@ -53,10 +53,30 @@ class Category extends \yii\mongodb\ActiveRecord
                 [
                     '_id',
                     'id',
+                ],
+                'safe'
+            ],
+            // rules for deep array values
+            [
+                [
                     'title',
                     'slug',
                 ],
-                'safe'
+                'each', 'rule' => ['trim']
+            ],
+            // check unique slug
+            [
+                [
+                    'slug',
+                ],
+                'each', 'rule' => ['unique']
+            ],
+            // check valid slug
+            [
+                [
+                    'slug',
+                ],
+                'each', 'rule' => ['match', 'pattern' => '/^[a-z0-9]+(?:-[a-z0-9]+)*$/']
             ],
         ];
     }
