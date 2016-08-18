@@ -105,5 +105,3 @@ Usage
 
 2. Then you check it out on your frontend:
     * /posts
-
-
