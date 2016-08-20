@@ -31,6 +31,20 @@ class PostController extends Controller
     }
 
     /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+            'image-upload' => [
+                'class' => 'vova07\imperavi\actions\UploadAction',
+                'url' => (new Post())->getUploadUrl(), // Directory URL address, where files are stored.
+                'path' => (new Post())->getUploadDirectory(), // Or absolute path to directory where files are stored.
+            ],
+        ];
+    }
+
+    /**
      * Lists all Post models.
      * @return mixed
      */

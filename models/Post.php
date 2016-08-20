@@ -3,6 +3,7 @@
 namespace devmustafa\blog\models;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "blog_posts".
@@ -158,7 +159,7 @@ class Post extends \yii\mongodb\ActiveRecord
             'title' => 'string',
             'slug' => 'string',
             'intro' => 'text',
-            'body' => 'text',
+            'body' => 'wysiwyg',
             'tags' => 'string',
             'meta_keywords' => 'text',
             'meta_description' => 'text',
@@ -336,11 +337,36 @@ class Post extends \yii\mongodb\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public function getUploadUrl()
+    {
+        // get module variables
+        $module = Yii::$app->getModule('blog');
+
+        // if `front_url` is defined
+        if(isset($module->front_url)) {
+            $front_url = $module->front_url;
+        } else {
+            // so you are on frontend app
+            $front_url = Url::base();
+        }
+        return $front_url . '/uploads/posts';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getImgOriginUrl()
     {
         // get module variables
         $module = Yii::$app->getModule('blog');
-        $front_url = $module->front_url;
+
+        // if `front_url` is defined
+        if(isset($module->front_url)) {
+            $front_url = $module->front_url;
+        } else {
+            // so you are on frontend app
+            $front_url = Url::base();
+        }
         return $front_url . '/uploads/posts/' . $this->image_origin;
     }
 

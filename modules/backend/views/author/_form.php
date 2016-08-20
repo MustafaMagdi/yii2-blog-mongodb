@@ -12,7 +12,7 @@ use yii\bootstrap\ActiveForm;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $this->render('_tabs', [
+    <?= $this->render('/_tabs', [
         'model' => $model, 'form' => $form, 'module_vars' => $module_vars
     ]) ?>
 

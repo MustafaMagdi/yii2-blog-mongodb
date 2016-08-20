@@ -3,9 +3,10 @@
 use yii\bootstrap\Tabs;
 
 /* @var $this yii\web\View */
-/* @var $model devmustafa\blog\models\Post */
+/* @var $model devmustafa\blog\models\[Post/Author/Category] */
 /* @var $form yii\widgets\ActiveForm */
 
+//
 $used_languages = $module_vars['used_languages'];
 $lang_attributes = $model->langAttributes();
 

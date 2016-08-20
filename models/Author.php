@@ -3,6 +3,7 @@
 namespace devmustafa\blog\models;
 
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "blog_posts".
@@ -159,7 +160,14 @@ class Author extends \yii\mongodb\ActiveRecord
     {
         // get module variables
         $module = Yii::$app->getModule('blog');
-        $front_url = $module->front_url;
+
+        // if `front_url` is defined
+        if(isset($module->front_url)) {
+            $front_url = $module->front_url;
+        } else {
+            // so you are on frontend app
+            $front_url = Url::base();
+        }
         return $front_url . '/uploads/authors/' . $this->img;
     }
 }
