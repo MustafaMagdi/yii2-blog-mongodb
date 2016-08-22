@@ -126,6 +126,12 @@ class Post extends \yii\mongodb\ActiveRecord
             ],
             [
                 [
+                    'slug',
+                ],
+                'each', 'rule' => ['validateSlug', 'skipOnEmpty' => true]
+            ],
+            [
+                [
                     '_id',
                     'id',
                     'intro',
@@ -137,6 +143,40 @@ class Post extends \yii\mongodb\ActiveRecord
                 'safe'
             ],
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateSlug($attribute, $params)
+    {
+        $module = Yii::$app->getModule('blog');
+        $used_languages = $module->used_languages;
+
+        $query = $this->find();
+
+        $loop = 1;
+        foreach ($used_languages as $language) {
+            if($loop == 1) {
+                $query->andFilterWhere(['=', "slug.{$language}", $this->slug]);
+            } else {
+                $query->orFilterWhere(['=', "slug.{$language}", $this->slug]);
+            }
+
+            // in case of update
+            if(!$this->isNewRecord) {
+                $query->andFilterWhere(['<>', "_id", $this->_id]);
+            }
+
+            if($query->exists()) {
+                $this->addError($attribute, Yii::t('app', Yii::t('app', 'Slug "{value}" is token in language "{lang}"', [
+                    'value' => $this->slug,
+                    'lang' => $language
+                ])));
+                break;
+            }
+            ++$loop;
+        }
     }
 
     /**
@@ -387,7 +427,8 @@ class Post extends \yii\mongodb\ActiveRecord
 
             //
             $query->andFilterWhere(['like', "title.{$default_language}", $q])
-                ->orFilterWhere(['like', "body.{$default_language}", $q]);
+                ->orFilterWhere(['like', "body.{$default_language}", $q])
+                ->orFilterWhere(['like', "tags.{$default_language}", $q]);
         }
 
         // return query object
@@ -403,7 +444,7 @@ class Post extends \yii\mongodb\ActiveRecord
         $default_language = $this->getWebsiteLang();
 
         $query = $this->find()
-            ->andFilterWhere(['like', "slug.{$default_language}", $slug]);
+            ->andFilterWhere(['=', "slug.{$default_language}", $slug]);
 
         // return query object
         return $query;

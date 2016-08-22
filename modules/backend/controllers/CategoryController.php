@@ -55,16 +55,15 @@ class CategoryController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
-        } else {
-            // get module variables
-            $module = Yii::$app->getModule('blog');
-            $module_vars = get_object_vars($module);
-
-            return $this->render('create', [
-                'model' => $model,
-                'module_vars' => $module_vars,
-            ]);
         }
+        // get module variables
+        $module = Yii::$app->getModule('blog');
+        $module_vars = get_object_vars($module);
+
+        return $this->render('create', [
+            'model' => $model,
+            'module_vars' => $module_vars,
+        ]);
     }
 
     /**
@@ -79,16 +78,15 @@ class CategoryController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
-        } else {
-            // get module variables
-            $module = Yii::$app->getModule('blog');
-            $module_vars = get_object_vars($module);
-
-            return $this->render('update', [
-                'model' => $model,
-                'module_vars' => $module_vars,
-            ]);
         }
+        // get module variables
+        $module = Yii::$app->getModule('blog');
+        $module_vars = get_object_vars($module);
+
+        return $this->render('update', [
+            'model' => $model,
+            'module_vars' => $module_vars,
+        ]);
     }
 
     /**
