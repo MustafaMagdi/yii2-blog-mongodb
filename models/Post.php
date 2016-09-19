@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * DB model for posts
+ *
+ * @author Mustafa Magdi <developer.mustafa@gmail.com>
+ * @link https://github.com/devmustafa/yii2-blog-mongodb
+ */
+
 namespace devmustafa\blog\models;
 
 use Yii;
@@ -40,7 +47,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of attributes/documents
      */
     public function attributes()
     {
@@ -68,7 +75,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of the collection rules
      */
     public function rules()
     {
@@ -146,7 +153,9 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * make sure that the slug is unique over your DB
+     * @param $attribute string
+     * @param $params array
      */
     public function validateSlug($attribute, $params)
     {
@@ -180,7 +189,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of documents labels
      */
     public function attributeLabels()
     {
@@ -191,7 +200,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of documents that are being used in the multilanguage form
      */
     public function langAttributes()
     {
@@ -207,7 +216,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of current language code used in the application ex. `en`
      */
     public function getWebsiteLang()
     {
@@ -217,7 +226,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of post name based on the current application language
      */
     public function getTitle()
     {
@@ -225,7 +234,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of post slug based on the current application language
      */
     public function getSlug()
     {
@@ -233,7 +242,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of post intro based on the current application language
      */
     public function getIntro()
     {
@@ -241,7 +250,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of post body based on the current application language
      */
     public function getBody()
     {
@@ -249,7 +258,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of post tags based on the current application language
      */
     public function getTags()
     {
@@ -257,7 +266,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of post tags based on the current application language
      */
     public function getTagsArray()
     {
@@ -269,7 +278,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of post meta keywords based on the current application language
      */
     public function getMetaKeywords()
     {
@@ -277,7 +286,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of post meta description based on the current application language
      */
     public function getMetaDescription()
     {
@@ -285,7 +294,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return object of category
      */
     public function getCategry()
     {
@@ -293,7 +302,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return object of category
      */
     public function getCategoryObj()
     {
@@ -301,7 +310,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of active categories
      */
     public function getActiveCategories()
     {
@@ -315,7 +324,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return object of author
      */
     public function getAuthor()
     {
@@ -323,7 +332,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return object of author
      */
     public function getAuthorObj()
     {
@@ -331,7 +340,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of active authors
      */
     public function getActiveAuthors()
     {
@@ -346,7 +355,10 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * upload post image
+     *
+     * @return string of photo name or
+     * @return bool if not done
      */
     public function upload()
     {
@@ -363,7 +375,9 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * if path is not found, just create and return
+     *
+     * @return string path
      */
     public function getUploadDirectory()
     {
@@ -375,7 +389,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return post image link
      */
     public function getUploadUrl()
     {
@@ -393,7 +407,7 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return post original image link
      */
     public function getImgOriginUrl()
     {
@@ -411,7 +425,13 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * search and returen the list of queries
+     *
+     * @param $offset int of pagination
+     * @param $limit int of posts
+     * @param $q string query character
+     *
+     * @return $query object
      */
     public function getPostsList($offset, $limit, $q = '')
     {
@@ -422,10 +442,13 @@ class Post extends \yii\mongodb\ActiveRecord
 
         // if search happened
         if (!empty($q)) {
+            // check http://php.net/manual/en/function.addslashes.php
+            $q = addslashes($q);
             // used language
             $default_language = $this->getWebsiteLang();
 
-            //
+            // check the following section
+            // http://www.yiiframework.com/doc-2.0/guide-security-best-practices.html#avoiding-sql-injections
             $query->andFilterWhere(['like', "title.{$default_language}", $q])
                 ->orFilterWhere(['like', "body.{$default_language}", $q])
                 ->orFilterWhere(['like', "tags.{$default_language}", $q]);
@@ -436,13 +459,22 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * return a single post by slyg
+     *
+     * @param $slug string
+     *
+     * @return $query object
      */
     public function getSinglePost($slug)
     {
         // default language
         $default_language = $this->getWebsiteLang();
 
+        // check http://php.net/manual/en/function.addslashes.php
+        $slug = addslashes($slug);
+
+        // check the following section
+        // http://www.yiiframework.com/doc-2.0/guide-security-best-practices.html#avoiding-sql-injections
         $query = $this->find()
             ->andFilterWhere(['=', "slug.{$default_language}", $slug]);
 

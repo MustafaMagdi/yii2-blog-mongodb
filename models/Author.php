@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * DB model for authors
+ *
+ * @author Mustafa Magdi <developer.mustafa@gmail.com>
+ * @link https://github.com/devmustafa/yii2-blog-mongodb
+ */
+
 namespace devmustafa\blog\models;
 
 use Yii;
@@ -27,7 +34,7 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of attributes/documents
      */
     public function attributes()
     {
@@ -43,7 +50,7 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of the collection rules
      */
     public function rules()
     {
@@ -80,7 +87,7 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of documents labels
      */
     public function attributeLabels()
     {
@@ -88,7 +95,7 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of documents that are being used in the multilanguage form
      */
     public function langAttributes()
     {
@@ -99,7 +106,7 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of current language code used in the application ex. `en`
      */
     public function getWebsiteLang()
     {
@@ -109,7 +116,7 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of author name based on the current application language
      */
     public function getName()
     {
@@ -117,7 +124,7 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of author bio based on the current application language
      */
     public function getBio()
     {
@@ -125,7 +132,9 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * upload author photo
+     *
+     * @return string of photo name
      */
     public function upload()
     {
@@ -142,7 +151,9 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * if path is not found, just create and return
+     *
+     * @return string path
      */
     public function getUploadDirectory()
     {
@@ -154,7 +165,7 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return auth image link
      */
     public function getImgUrl()
     {

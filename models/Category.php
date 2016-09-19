@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * DB model for categories
+ *
+ * @author Mustafa Magdi <developer.mustafa@gmail.com>
+ * @link https://github.com/devmustafa/yii2-blog-mongodb
+ */
+
 namespace devmustafa\blog\models;
 
 use Yii;
@@ -24,7 +31,7 @@ class Category extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of attributes/documents
      */
     public function attributes()
     {
@@ -38,7 +45,7 @@ class Category extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of the collection rules
      */
     public function rules()
     {
@@ -82,7 +89,7 @@ class Category extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of documents labels
      */
     public function attributeLabels()
     {
@@ -90,7 +97,7 @@ class Category extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return array of documents that are being used in the multilanguage form
      */
     public function langAttributes()
     {
@@ -101,7 +108,7 @@ class Category extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of current language code used in the application ex. `en`
      */
     public function getWebsiteLang()
     {
@@ -111,7 +118,7 @@ class Category extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of category name based on the current application language
      */
     public function getTitle()
     {
@@ -119,7 +126,7 @@ class Category extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @return string of category slug based on the current application language
      */
     public function getSlug()
     {

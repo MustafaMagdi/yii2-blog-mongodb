@@ -1,19 +1,21 @@
 <?php
 
-namespace devmustafa\blog;
-
 /**
  * frontend module definition class
+ *
+ * @author Mustafa Magdi <developer.mustafa@gmail.com>
+ * @link https://github.com/devmustafa/yii2-blog-mongodb
  */
+
+namespace devmustafa\blog;
+
 class Module extends \yii\base\Module
 {
-    /**
-     * @inheritdoc
-     */
+
     public $controllerNamespace = 'devmustafa\blog\controllers';
 
     /**
-     * @inheritdoc
+     * define the two submodules for front/backend
      */
     public function init()
     {

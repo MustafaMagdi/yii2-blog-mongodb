@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * implementing search based on Post class
+ *
+ * @author Mustafa Magdi <developer.mustafa@gmail.com>
+ * @link https://github.com/devmustafa/yii2-blog-mongodb
+ */
+
 namespace devmustafa\blog\models;
 
 use Yii;
@@ -12,7 +19,7 @@ use yii\data\ActiveDataProvider;
 class PostSearch extends Post
 {
     /**
-     * @inheritdoc
+     * @return array of the collection rules
      */
     public function rules()
     {
@@ -22,7 +29,7 @@ class PostSearch extends Post
     }
 
     /**
-     * @inheritdoc
+     * @return array of scenarios
      */
     public function scenarios()
     {
