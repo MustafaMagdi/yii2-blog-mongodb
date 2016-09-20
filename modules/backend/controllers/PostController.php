@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * crud - posts
+ *
+ * @author Mustafa Magdi <developer.mustafa@gmail.com>
+ * @link https://github.com/devmustafa/yii2-blog-mongodb
+ */
+
 namespace devmustafa\blog\modules\backend\controllers;
 
 use Yii;

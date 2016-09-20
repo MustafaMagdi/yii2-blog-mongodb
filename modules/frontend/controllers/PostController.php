@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * frontend - posts
+ *
+ * @author Mustafa Magdi <developer.mustafa@gmail.com>
+ * @link https://github.com/devmustafa/yii2-blog-mongodb
+ */
+
 namespace devmustafa\blog\modules\frontend\controllers;
 
 use Yii;
@@ -28,7 +36,8 @@ class PostController extends Controller
     }
 
     /**
-     * @inheritdoc
+     * list of posts
+     * @return object view of posts list
      */
     public function actionIndex()
     {
@@ -58,7 +67,8 @@ class PostController extends Controller
     }
 
     /**
-     * @inheritdoc
+     * single post based on the slug passed
+     * @return object view of single post
      */
     public function actionSingle()
     {

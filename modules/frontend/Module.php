@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * frontend module class
+ *
+ * @author Mustafa Magdi <developer.mustafa@gmail.com>
+ * @link https://github.com/devmustafa/yii2-blog-mongodb
+ */
+
 namespace devmustafa\blog\modules\frontend;
 
 use Yii;
@@ -10,17 +17,17 @@ use Yii;
 class Module extends \yii\base\Module
 {
     /**
-     * @inheritdoc
+     * listing size number
      */
 	public $listing_size;
 
     /**
-     * @inheritdoc
+     * array of languages used
      */
 	public $used_languages;
 
     /**
-     * @inheritdoc
+     * default language used
      */
 	public $default_language;
 

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * backend module class
+ *
+ * @author Mustafa Magdi <developer.mustafa@gmail.com>
+ * @link https://github.com/devmustafa/yii2-blog-mongodb
+ */
+
 namespace devmustafa\blog\modules\backend;
 
 /**
@@ -8,22 +15,22 @@ namespace devmustafa\blog\modules\backend;
 class Module extends \yii\base\Module
 {
     /**
-     * @inheritdoc
+     * listing size number
      */
 	public $listing_size;
 
     /**
-     * @inheritdoc
+     * array of languages used
      */
 	public $used_languages;
 
     /**
-     * @inheritdoc
+     * the frontend base url
      */
 	public $front_url;
 
     /**
-     * @inheritdoc
+     * default language used
      */
 	public $default_language;
 
