@@ -78,6 +78,14 @@ class Category extends \yii\mongodb\ActiveRecord
                 ],
                 'each', 'rule' => ['unique']
             ],
+            // validate slug
+            [
+                [
+                    'slug',
+                ],
+                'validateSlug',
+                'skipOnEmpty' => false
+            ],
             // check valid slug
             [
                 [
@@ -89,11 +97,67 @@ class Category extends \yii\mongodb\ActiveRecord
     }
 
     /**
+     * make sure that the slug is unique over your DB and generate it if empty
+     *
+     * @param $attribute string
+     * @param $params array
+     */
+    public function validateSlug($attribute, $params)
+    {
+        $module = Yii::$app->getModule('blog');
+        $used_languages = $module->used_languages;
+
+        $query = $this->find();
+
+        $slugs = [];
+
+        foreach ($used_languages as $language) {
+            if(empty($this->slug[$language]) && !empty($this->title[$language])) {
+                $slugs[$language] = Helper::slugify($this->title[$language]);
+            } else {
+                $slugs[$language] = $this->slug[$language];
+            }
+
+            // check if empty
+            if(empty($slugs[$language])) {
+                break;
+            }
+
+            $query->andFilterWhere(['=', "slug.{$language}", $slugs[$language]]);
+
+            // in case of update
+            if(!$this->isNewRecord) {
+                $query->andFilterWhere(['<>', "_id", $this->_id]);
+            }
+
+            if($query->exists()) {
+                $this->addError($attribute, Yii::t('app', Yii::t('app', 'Slug "{value}" is token in language "{lang}"', [
+                    'value' => $slugs[$language],
+                    'lang' => $language
+                ])));
+                break;
+            }
+        }
+        $this->slug = $slugs;
+    }
+
+    /**
      * @return array of documents labels
      */
     public function attributeLabels()
     {
         return [];
+    }
+
+    /**
+     * setup hints
+     *
+     * @return array of hints
+     */
+    function attributeHints()
+    {
+        $hints['slug'] = Yii::t('app', 'Leave empty to autogenerate');
+        return $hints;
     }
 
     /**
@@ -115,6 +179,14 @@ class Category extends \yii\mongodb\ActiveRecord
         // get module variables
         $module = Yii::$app->getModule('blog');
         return $module->default_language;
+    }
+
+    /**
+     * @return string _id
+     */
+    public function getId()
+    {
+        return (string) $this->_id;
     }
 
     /**

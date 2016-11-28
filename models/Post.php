@@ -105,37 +105,42 @@ class Post extends \yii\mongodb\ActiveRecord
             ],
             [
                 [
-                'image_origin',
-                'image_thumb'
+                    'image_origin',
+                    'image_thumb'
                 ],
-                'image', 'skipOnEmpty' => true
+                'image',
+                'skipOnEmpty' => true
             ],
             // check unique slug
             [
                 [
                     'slug',
                 ],
-                'each', 'rule' => ['unique']
+                'each',
+                'rule' => ['unique']
             ],
             // check valid slug
             [
                 [
                     'slug',
                 ],
-                'each', 'rule' => ['match', 'pattern' => '/^[a-z0-9]+(?:-[a-z0-9]+)*$/']
+                'each',
+                'rule' => ['match', 'pattern' => '/^[a-z0-9]+(?:-[a-z0-9]+)*$/']
             ],
             [
                 [
                     'title',
                     'slug',
                 ],
-                'each', 'rule' => ['trim']
+                'each',
+                'rule' => ['trim']
             ],
             [
                 [
                     'slug',
                 ],
-                'each', 'rule' => ['validateSlug', 'skipOnEmpty' => true]
+                'validateSlug',
+                'skipOnEmpty' => false
             ],
             [
                 [
@@ -153,7 +158,8 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
-     * make sure that the slug is unique over your DB
+     * make sure that the slug is unique over your DB and generate it if empty
+     *
      * @param $attribute string
      * @param $params array
      */
@@ -164,28 +170,37 @@ class Post extends \yii\mongodb\ActiveRecord
 
         $query = $this->find();
 
-        $loop = 1;
+        $slugs = [];
+
         foreach ($used_languages as $language) {
-            if($loop == 1) {
-                $query->andFilterWhere(['=', "slug.{$language}", $this->slug]);
+            if (empty($this->slug[$language]) && !empty($this->title[$language])) {
+                $slugs[$language] = Helper::slugify($this->title[$language]);
             } else {
-                $query->orFilterWhere(['=', "slug.{$language}", $this->slug]);
+                $slugs[$language] = $this->slug[$language];
             }
 
+            // check if empty
+            if (empty($slugs[$language])) {
+                break;
+            }
+
+            $query->andFilterWhere(['=', "slug.{$language}", $slugs[$language]]);
+
             // in case of update
-            if(!$this->isNewRecord) {
+            if (!$this->isNewRecord) {
                 $query->andFilterWhere(['<>', "_id", $this->_id]);
             }
 
-            if($query->exists()) {
-                $this->addError($attribute, Yii::t('app', Yii::t('app', 'Slug "{value}" is token in language "{lang}"', [
-                    'value' => $this->slug,
-                    'lang' => $language
-                ])));
+            if ($query->exists()) {
+                $this->addError($attribute,
+                    Yii::t('app', Yii::t('app', 'Slug "{value}" is token in language "{lang}"', [
+                        'value' => $slugs[$language],
+                        'lang' => $language
+                    ])));
                 break;
             }
-            ++$loop;
         }
+        $this->slug = $slugs;
     }
 
     /**
@@ -216,6 +231,18 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
+     * setup hints
+     *
+     * @return array of hints
+     */
+    function attributeHints()
+    {
+        $hints['slug'] = Yii::t('app', 'Leave empty to autogenerate');
+        $hints['tags'] = Yii::t('app', 'Tags are comma separated');
+        return $hints;
+    }
+
+    /**
      * @return string of current language code used in the application ex. `en`
      */
     public function getWebsiteLang()
@@ -223,6 +250,14 @@ class Post extends \yii\mongodb\ActiveRecord
         // get module variables
         $module = Yii::$app->getModule('blog');
         return $module->default_language;
+    }
+
+    /**
+     * @return string _id
+     */
+    public function getId()
+    {
+        return (string) $this->_id;
     }
 
     /**
@@ -271,7 +306,7 @@ class Post extends \yii\mongodb\ActiveRecord
     public function getTagsArray()
     {
         $tags = $this->getTags();
-        if($tags) {
+        if ($tags) {
             return explode(',', $tags);
         }
         return null;
@@ -314,8 +349,9 @@ class Post extends \yii\mongodb\ActiveRecord
      */
     public function getActiveCategories()
     {
-        // todo : check '->where(['is_active' => 1])'
-        $categories = Category::find()->all();
+        $categories = Category::find()
+            ->where(['is_active' => '1'])
+            ->all();
         $arr = [];
         foreach ($categories as $category) {
             $arr[(string)$category->_id] = $category->getTitle();
@@ -344,8 +380,9 @@ class Post extends \yii\mongodb\ActiveRecord
      */
     public function getActiveAuthors()
     {
-        // todo : check '->where(['is_active' => 1])'
-        $authors = Author::find()->all();
+        $authors = Author::find()
+            ->where(['is_active' => '1'])
+            ->all();
         $arr = [];
         foreach ($authors as $author) {
             $arr[(string)$author->_id] = $author->getName();
@@ -382,7 +419,7 @@ class Post extends \yii\mongodb\ActiveRecord
     public function getUploadDirectory()
     {
         $directory = \Yii::getAlias('@frontend') . '/web/uploads/posts';
-        if(!file_exists($directory)) {
+        if (!file_exists($directory)) {
             mkdir($directory, 0777, true);
         }
         return $directory;
@@ -397,7 +434,7 @@ class Post extends \yii\mongodb\ActiveRecord
         $module = Yii::$app->getModule('blog');
 
         // if `front_url` is defined
-        if(isset($module->front_url)) {
+        if (isset($module->front_url)) {
             $front_url = $module->front_url;
         } else {
             // so you are on frontend app
@@ -415,7 +452,7 @@ class Post extends \yii\mongodb\ActiveRecord
         $module = Yii::$app->getModule('blog');
 
         // if `front_url` is defined
-        if(isset($module->front_url)) {
+        if (isset($module->front_url)) {
             $front_url = $module->front_url;
         } else {
             // so you are on frontend app
@@ -440,18 +477,67 @@ class Post extends \yii\mongodb\ActiveRecord
             ->offset($offset)
             ->limit($limit);
 
+        // used language
+        $default_language = $this->getWebsiteLang();
+
+        // ignore posts with no titles or bodies
+        $query->andFilterWhere([
+                "title.{$default_language}" => [
+                    '$ne' => ''
+                ],
+                "body.{$default_language}" => [
+                    '$ne' => ''
+                ]
+            ]
+        );
+
         // if search happened
         if (!empty($q)) {
-            // check http://php.net/manual/en/function.addslashes.php
-            $q = addslashes($q);
-            // used language
-            $default_language = $this->getWebsiteLang();
-
-            // check the following section
-            // http://www.yiiframework.com/doc-2.0/guide-security-best-practices.html#avoiding-sql-injections
             $query->andFilterWhere(['like', "title.{$default_language}", $q])
                 ->orFilterWhere(['like', "body.{$default_language}", $q])
                 ->orFilterWhere(['like', "tags.{$default_language}", $q]);
+        }
+
+        // return query object
+        return $query;
+    }
+
+    /**
+     * get posts by category
+     *
+     * @param $offset int of pagination
+     * @param $limit int of posts
+     * @param $category_slug string query character
+     *
+     * @return $query object
+     */
+    public function getPostsByCategory($offset, $limit, $category_slug)
+    {
+        $query = $this->find();
+        $query->andFilterWhere(['like', 'is_published', 1])
+            ->offset($offset)
+            ->limit($limit);
+
+        // used language
+        $default_language = $this->getWebsiteLang();
+
+        // ignore posts with no titles or bodies
+        $query->andFilterWhere([
+                "title.{$default_language}" => [
+                    '$ne' => ''
+                ],
+                "body.{$default_language}" => [
+                    '$ne' => ''
+                ]
+            ]
+        );
+
+        // check category
+        $category = Category::findOne([
+            "slug.{$default_language}" => $category_slug
+        ]);
+        if($category != null) {
+            $query->andFilterWhere(["category_id" => $category->getId()]);
         }
 
         // return query object
@@ -470,13 +556,19 @@ class Post extends \yii\mongodb\ActiveRecord
         // default language
         $default_language = $this->getWebsiteLang();
 
-        // check http://php.net/manual/en/function.addslashes.php
-        $slug = addslashes($slug);
-
-        // check the following section
-        // http://www.yiiframework.com/doc-2.0/guide-security-best-practices.html#avoiding-sql-injections
         $query = $this->find()
             ->andFilterWhere(['=', "slug.{$default_language}", $slug]);
+
+        // ignore if no title or body
+        $query->andFilterWhere([
+                "title.{$default_language}" => [
+                    '$ne' => ''
+                ],
+                "body.{$default_language}" => [
+                    '$ne' => ''
+                ]
+            ]
+        );
 
         // return query object
         return $query;

@@ -32,6 +32,11 @@ class Module extends \yii\base\Module
 	public $default_language;
 
     /**
+     * routing rules
+     */
+    public $rules;
+
+    /**
      * @inheritdoc
      */
     public $controllerNamespace = 'devmustafa\blog\modules\frontend\controllers';

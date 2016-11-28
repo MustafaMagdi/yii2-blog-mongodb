@@ -22,11 +22,14 @@ class Bootstrap implements BootstrapInterface
     {
         if ($app instanceof \yii\web\Application && $blogModule = Yii::$app->getModule('blog')) {
             $moduleId = $blogModule->id;
-            $app->getUrlManager()->addRules([
-                // frontend
-                'posts' => $moduleId . '/post',
-                'post/<slug>' => $moduleId . '/post/single',
-            ], false);
+
+            // setup the rules for frontend routes
+            $rules = $blogModule->rules;
+            foreach ($rules as $key => $rule) {
+                $app->getUrlManager()->addRules([
+                    $key => $moduleId . $rule,
+                ], false);
+            }
         }
     }
 }

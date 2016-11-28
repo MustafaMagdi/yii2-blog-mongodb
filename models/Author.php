@@ -116,6 +116,14 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
+     * @return string _id
+     */
+    public function getId()
+    {
+        return (string) $this->_id;
+    }
+
+    /**
      * @return string of author name based on the current application language
      */
     public function getName()

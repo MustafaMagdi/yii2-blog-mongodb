@@ -49,7 +49,7 @@ class PostController extends Controller
         $q = Yii::$app->request->get('q', '');
 
         // return query object
-        $query = (new Post)->getPostsList($offset, $limit, $q);
+        $query = (new Post)->getPostsList($offset, $limit, '', $q);
 
         $posts = $query->all();
 
@@ -57,7 +57,7 @@ class PostController extends Controller
             'totalCount' => $query->count(),
             'defaultPageSize' => $limit,
             'pageSize' => $limit,
-            'route' => '/post',
+            'route' => '/posts',
         ]);
 
         return $this->render('index', [
@@ -86,6 +86,37 @@ class PostController extends Controller
 
         return $this->render('single', [
             'post' => $post,
+        ]);
+    }
+
+    /**
+     * single post based on the slug passed
+     * @return object view of single post
+     */
+    public function actionCategory()
+    {
+        // get page
+        $limit = $this->module->listing_size;
+        $page_number = Yii::$app->request->get('page', 1);
+        $offset = $page_number - 1; // get offset
+
+        $slug = Yii::$app->request->get('slug', '');
+
+        // return query object
+        $query = (new Post)->getPostsByCategory($offset, $limit, $slug);
+
+        $posts = $query->all();
+
+        $pages = new Pagination([
+            'totalCount' => $query->count(),
+            'defaultPageSize' => $limit,
+            'pageSize' => $limit,
+            'route' => '/category',
+        ]);
+
+        return $this->render('index', [
+            'posts' => $posts,
+            'pages' => $pages,
         ]);
     }
 
