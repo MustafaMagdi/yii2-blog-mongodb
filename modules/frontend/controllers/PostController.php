@@ -49,7 +49,7 @@ class PostController extends Controller
         $q = Yii::$app->request->get('q', '');
 
         // return query object
-        $query = (new Post)->getPostsList($offset, $limit, '', $q);
+        $query = (new Post)->getPostsList($offset, $limit, $q);
 
         $posts = $query->all();
 
