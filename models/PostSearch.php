@@ -24,7 +24,7 @@ class PostSearch extends Post
     public function rules()
     {
         return [
-            [['_id', 'id', 'author_id', 'category_id', 'views', 'is_published', 'is_notification_sent', 'publish_date', 'created_at', 'updated_at', 'title', 'slug', 'intro', 'body', 'tags', 'meta_keywords', 'meta_description', 'image_origin', 'image_thumb'], 'safe'],
+            [['_id', 'id', 'author_id', 'category_id', 'views', 'is_published', 'publish_date', 'created_at', 'updated_at', 'title', 'slug', 'intro', 'body', 'tags', 'meta_keywords', 'meta_description', 'image', 'image_thumb'], 'safe'],
         ];
     }
 
@@ -69,7 +69,6 @@ class PostSearch extends Post
             ->andFilterWhere(['like', 'category_id', $this->category_id])
             ->andFilterWhere(['like', 'views', $this->views])
             ->andFilterWhere(['like', 'is_published', $this->is_published])
-            ->andFilterWhere(['like', 'is_notification_sent', $this->is_notification_sent])
             ->andFilterWhere(['like', 'publish_date', $this->publish_date])
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'updated_at', $this->updated_at]);

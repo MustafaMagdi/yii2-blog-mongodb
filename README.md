@@ -56,11 +56,18 @@ Configuration
         'modules' => [
             ...
             'blog' => [
+                'id' => 'blog',
                 'class' => devmustafa\blog\modules\frontend\Module::className(),
-                'used_languages' => ['en', 'fr'], // list of languages used
+                'used_languages' => ['en', 'ar'], // list of languages used
                 'default_language' => 'en', // default language
                 'listing_size' => 10, // default size of listing page
-            ]
+                'rules' => [ // setup rules for frontend routes
+                    // change key not value
+                    'posts' => '/post',
+                    'post/<slug>' => '/post/single',
+                    'category/<slug>' => '/post/category', // posts related to a specific category
+                ]
+            ],
             ...
         ]
         ...
@@ -73,12 +80,13 @@ Configuration
         'modules' => [
             ...
             'blog' => [
+                'id' => 'blog',
                 'class' => devmustafa\blog\modules\backend\Module::className(),
-                'front_url' => 'http://yourdomain.local', // blog url
-                'used_languages' => ['en', 'fr'], // list of languages used
+                'upload_url' => 'http://example.com/uploads', // full upload url
+                'upload_directory' => '/full/path/to/uploads/dir', // full upload directory
+                'used_languages' => ['en', 'ar'], // list of languages used
                 'default_language' => 'en', // default language
-                'listing_size' => 10, // default size of listing page
-            ]
+            ],
             ...
         ]
         ...

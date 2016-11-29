@@ -65,7 +65,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             // 'views',
-            // 'is_notification_sent',
             // 'publish_date',
             // 'created_at',
             // 'updated_at',
@@ -74,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'tags',
             // 'meta_keywords',
             // 'meta_description',
-            // 'image_origin',
+            // 'image',
             // 'image_thumb',
 
             [

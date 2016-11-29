@@ -10,10 +10,12 @@
 namespace devmustafa\blog\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\helpers\Url;
+use yii\mongodb\ActiveRecord;
 
 /**
- * This is the model class for table "blog_posts".
+ * This is the model class for table "blog_authors".
  *
  * @property int $_id
  * @property int $id
@@ -22,6 +24,8 @@ use yii\helpers\Url;
  * @property string $url
  * @property string $img
  * @property bool $is_active
+ * @property bool $created_at
+ * @property bool $updated_at
  */
 class Author extends \yii\mongodb\ActiveRecord
 {
@@ -46,6 +50,8 @@ class Author extends \yii\mongodb\ActiveRecord
             'url',
             'img',
             'is_active',
+            'created_at',
+            'updated_at',
         ];
     }
 
@@ -68,13 +74,10 @@ class Author extends \yii\mongodb\ActiveRecord
                 'url'
             ],
             [
-                [
-                    '_id',
-                    'id',
-                ],
-                'safe'
+                ['img'],
+                'image',
+                'skipOnEmpty' => true
             ],
-            [['img'], 'image', 'skipOnEmpty' => true],
             // rules for deep array values
             [
                 [
@@ -82,6 +85,31 @@ class Author extends \yii\mongodb\ActiveRecord
                     'bio',
                 ],
                 'each', 'rule' => ['trim']
+            ],
+            [
+                [
+                    '_id',
+                    'id',
+                    'created_at',
+                    'updated_at',
+                ],
+                'safe'
+            ]
+        ];
+    }
+
+    /**
+     * TimestampBehavior for updating creating and updating dates
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
             ],
         ];
     }
@@ -152,7 +180,10 @@ class Author extends \yii\mongodb\ActiveRecord
                     $this->img->baseName) . '-' . time() . '-' . uniqid() . '.' . $this->img->extension;
 
             $this->img->saveAs($this->getUploadDirectory() . '/' . $img_name);
-            return $img_name;
+
+            // create image urls
+            $image_url = $this->getUploadUrl() . '/' . $img_name;
+            return $image_url;
         } else {
             return false;
         }
@@ -165,28 +196,28 @@ class Author extends \yii\mongodb\ActiveRecord
      */
     public function getUploadDirectory()
     {
-        $directory = \Yii::getAlias('@frontend') . '/web/uploads/authors';
-        if(!file_exists($directory)) {
+        // get module variables
+        $module = Yii::$app->getModule('blog');
+
+        $directory = $module->upload_directory . '/authors';
+        if (!file_exists($directory)) {
             mkdir($directory, 0777, true);
         }
         return $directory;
     }
 
     /**
-     * @return auth image link
+     * @return post image link
      */
-    public function getImgUrl()
+    public function getUploadUrl()
     {
         // get module variables
         $module = Yii::$app->getModule('blog');
 
-        // if `front_url` is defined
-        if(isset($module->front_url)) {
-            $front_url = $module->front_url;
-        } else {
-            // so you are on frontend app
-            $front_url = Url::base();
+        // if `upload_url` is defined
+        if (isset($module->upload_url)) {
+            $upload_url = $module->upload_url;
         }
-        return $front_url . '/uploads/authors/' . $this->img;
+        return $upload_url . '/authors';
     }
 }

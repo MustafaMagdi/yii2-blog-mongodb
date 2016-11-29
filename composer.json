@@ -13,7 +13,8 @@
     "require": {
         "yiisoft/yii2": "*",
         "yiisoft/yii2-mongodb": "~2.1.0",
-        "vova07/yii2-imperavi-widget": "*"
+        "vova07/yii2-imperavi-widget": "*",
+        "yiisoft/yii2-imagine": "*"
     },
     "autoload": {
         "psr-4": {

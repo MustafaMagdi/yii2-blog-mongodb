@@ -15,19 +15,19 @@ namespace devmustafa\blog\modules\backend;
 class Module extends \yii\base\Module
 {
     /**
-     * listing size number
-     */
-	public $listing_size;
-
-    /**
      * array of languages used
      */
 	public $used_languages;
 
     /**
-     * the frontend base url
+     * the full upload url
      */
-	public $front_url;
+	public $upload_url;
+
+    /**
+     * the full upload directory
+     */
+	public $upload_directory;
 
     /**
      * default language used
@@ -37,7 +37,7 @@ class Module extends \yii\base\Module
     /**
      * routing rules
      */
-	public $rules;
+	public $rules = [];
 
     /**
      * @inheritdoc

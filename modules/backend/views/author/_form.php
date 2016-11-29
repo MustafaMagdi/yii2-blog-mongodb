@@ -21,7 +21,7 @@ use yii\bootstrap\ActiveForm;
     <?php
     if (!empty($model->img)) {
         ?>
-        <img src="<?= $model->getImgUrl() ?>" height="200" />
+        <img src="<?= $model->img ?>" height="200" />
         <?php
     }
     echo $form->field($model, 'img')->fileInput()

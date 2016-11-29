@@ -34,6 +34,13 @@ foreach ($lang_attributes as $attribute => $type) {
                 ],
             ],
         ]);
+    } elseif($type == 'image') {
+        if (!empty($model->{$attribute}[$language])) {
+            ?>
+            <img src="<?= $model->{$attribute}[$language] ?>" height="200" />
+            <?php
+        }
+        echo $form->field($model, "{$attribute}[$language]")->fileInput();
     } else {
         echo $form->field($model, "{$attribute}[$language]");
     }

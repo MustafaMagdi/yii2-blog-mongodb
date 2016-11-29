@@ -10,6 +10,8 @@
 namespace devmustafa\blog\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\mongodb\ActiveRecord;
 
 /**
  * This is the model class for table "blog_posts".
@@ -19,6 +21,8 @@ use Yii;
  * @property string $title
  * @property string $slug
  * @property bool $is_active
+ * @property int $created_at
+ * @property int $updated_at
  */
 class Category extends \yii\mongodb\ActiveRecord
 {
@@ -41,6 +45,8 @@ class Category extends \yii\mongodb\ActiveRecord
             'title',
             'slug',
             'is_active',
+            'created_at',
+            'updated_at',
         ];
     }
 
@@ -55,13 +61,6 @@ class Category extends \yii\mongodb\ActiveRecord
                     'is_active',
                 ],
                 'boolean'
-            ],
-            [
-                [
-                    '_id',
-                    'id',
-                ],
-                'safe'
             ],
             // rules for deep array values
             [
@@ -86,13 +85,15 @@ class Category extends \yii\mongodb\ActiveRecord
                 'validateSlug',
                 'skipOnEmpty' => false
             ],
-            // check valid slug
             [
                 [
-                    'slug',
+                    '_id',
+                    'id',
+                    'created_at',
+                    'updated_at',
                 ],
-                'each', 'rule' => ['match', 'pattern' => '/^[a-z0-9]+(?:-[a-z0-9]+)*$/']
-            ],
+                'safe'
+            ]
         ];
     }
 
@@ -112,13 +113,14 @@ class Category extends \yii\mongodb\ActiveRecord
         $slugs = [];
 
         foreach ($used_languages as $language) {
-            if(empty($this->slug[$language]) && !empty($this->title[$language])) {
+            // generate or validate slug
+            if((empty($this->slug[$language]) && !empty($this->title[$language]))) { // generate
                 $slugs[$language] = Helper::slugify($this->title[$language]);
-            } else {
-                $slugs[$language] = $this->slug[$language];
+            } elseif(!empty($this->slug[$language])) { // validate
+                $slugs[$language] = Helper::slugify($this->slug[$language]);
             }
 
-            // check if empty
+            // skip if empty
             if(empty($slugs[$language])) {
                 break;
             }
@@ -139,6 +141,22 @@ class Category extends \yii\mongodb\ActiveRecord
             }
         }
         $this->slug = $slugs;
+    }
+
+    /**
+     * TimestampBehavior for updating creating and updating dates
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+            ],
+        ];
     }
 
     /**

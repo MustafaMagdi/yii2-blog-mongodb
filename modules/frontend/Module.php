@@ -34,7 +34,7 @@ class Module extends \yii\base\Module
     /**
      * routing rules
      */
-    public $rules;
+    public $rules = [];
 
     /**
      * @inheritdoc

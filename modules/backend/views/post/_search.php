@@ -27,8 +27,6 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'is_published') ?>
 
-    <?php // echo $form->field($model, 'is_notification_sent') ?>
-
     <?php // echo $form->field($model, 'publish_date') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
@@ -49,7 +47,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'meta_description') ?>
 
-    <?php // echo $form->field($model, 'image_origin') ?>
+    <?php // echo $form->field($model, 'image') ?>
 
     <?php // echo $form->field($model, 'image_thumb') ?>
 

@@ -76,14 +76,15 @@ class PostController extends Controller
         $model = new Post();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->image_origin = UploadedFile::getInstance($model, 'image_origin');
-            if ($file_name = $model->upload()) {
+            if ($image = $model->upload('image')) {
                 // file is uploaded successfully
-                $model->image_origin = $file_name;
+                $model->image = $image['image'];
+                $model->image_thumb = $image['image_thumb'];
             }
-            // todo: generate thumbnails
+
             if($model->save()) {
-                return $this->redirect(['index']);
+                \Yii::$app->getSession()->setFlash('success', 'Record updated successfully :)');
+                return $this->redirect(['update', 'id' => $id]);
             }
         }
         // get module variables
@@ -106,19 +107,19 @@ class PostController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $image_origin = $model->image_origin;
+        $image_origin = $model->image;
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->image_origin = UploadedFile::getInstance($model, 'image_origin');
-            if ($file_name = $model->upload()) {
+            if ($image = $model->upload('image')) {
                 // file is uploaded successfully
-                $model->image_origin = $file_name;
-                // todo: generate thumbnails
+                $model->image = $image['image'];
+                $model->image_thumb = $image['image_thumb'];
             } else {
-                $model->image_origin = $image_origin;
+                $model->image = $image_origin;
             }
             if($model->save()) {
-                return $this->redirect(['index']);
+                \Yii::$app->getSession()->setFlash('success', 'Record updated successfully :)');
+                return $this->redirect(['update', 'id' => $id]);
             }
         }
         // get module variables
@@ -159,5 +160,4 @@ class PostController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
 }
