@@ -168,6 +168,14 @@ class Author extends \yii\mongodb\ActiveRecord
     }
 
     /**
+     * @return string of author url
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
      * upload author photo
      *
      * @return string of photo name

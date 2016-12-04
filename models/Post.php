@@ -358,6 +358,22 @@ class Post extends \yii\mongodb\ActiveRecord
     }
 
     /**
+     * @return string of post image based on the current application language
+     */
+    public function getImage()
+    {
+        return isset($this->image[$this->getWebsiteLang()]) ? $this->image[$this->getWebsiteLang()] : null;
+    }
+
+    /**
+     * @return string of post image based on the current application language
+     */
+    public function getPublishDate($format = 'Y-m-d')
+    {
+        return date($this->publish_date, $format);
+    }
+
+    /**
      * @return object of category
      */
     public function getCategry()
@@ -505,7 +521,8 @@ class Post extends \yii\mongodb\ActiveRecord
     public function getPostsList($offset, $limit, $q = '')
     {
         $query = $this->find();
-        $query->andFilterWhere(['like', 'is_published', 1])
+        $query->andFilterWhere(['is_published' => true])
+            ->orderBy('publish_date DESC')
             ->offset($offset)
             ->limit($limit);
 
