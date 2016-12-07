@@ -16,6 +16,7 @@ use yii\web\Controller;
 use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use zxbodya\yii2\elfinder\ConnectorAction;
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -42,12 +43,19 @@ class PostController extends Controller
      */
     public function actions()
     {
+        // get module variables
+        $module = Yii::$app->getModule('blog');
+
         return [
-            'image-upload' => [
-                'class' => 'vova07\imperavi\actions\UploadAction',
-                'url' => (new Post())->getUploadUrl(), // Directory URL address, where files are stored.
-                'path' => (new Post())->getUploadDirectory(), // Or absolute path to directory where files are stored.
-            ],
+            'connector' => array(
+                'class' => ConnectorAction::className(),
+                'settings' => array(
+                    'root' => $module->upload_directory,
+                    'URL' => $module->upload_url,
+                    'rootAlias' => 'Home',
+                    'mimeDetect' => 'none'
+                )
+            ),
         ];
     }
 

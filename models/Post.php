@@ -249,8 +249,8 @@ class Post extends \yii\mongodb\ActiveRecord
         return [
             'title' => 'string',
             'slug' => 'string',
-            'intro' => 'wysiwyg',
-            'body' => 'wysiwyg',
+            'intro' => 'editor',
+            'body' => 'editor',
             'tags' => 'string',
             'meta_keywords' => 'text',
             'meta_description' => 'text',
